@@ -1,0 +1,40 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+
+Description: >
+  This template sets up the the infrastructure.
+
+Parameters:
+  BuildNumber:
+    Default: "1"
+    Description: "build number"
+    Type: String
+    MinLength: 1
+    ConstraintDescription: "is required"
+
+Metadata:
+  AWS::CloudFormation::Interface:
+    ParameterGroups:
+      - 
+        Label:
+          default: "CodePipeline settings"
+        Parameters:
+          - BuildNumber
+
+    ParameterLabels:
+      BuildNumber:
+        default: "BuildNumber"
+
+Resources:
+  # --- BEGIN OUR INFRASTRUCTURE ---
+  DataS3Bucket:
+    Type: 'AWS::S3::Bucket'
+    DeletionPolicy: Retain
+    Properties:
+      BucketName: "tedx-2024-data"
+
+  ScriptS3Bucket:
+    Type: 'AWS::S3::Bucket'
+    DeletionPolicy: Retain
+    Properties:
+      BucketName: "tedx-2024-script"

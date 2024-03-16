@@ -27,8 +27,48 @@ Metadata:
 
 Resources:
   # --- BEGIN OUR INFRASTRUCTURE ---
-  S3Bucket:
+  DataS3Bucket:
     Type: 'AWS::S3::Bucket'
     DeletionPolicy: Retain
     Properties:
       BucketName: "tedx-2024-data"
+
+  ScriptS3Bucket:
+    Type: 'AWS::S3::Bucket'
+    DeletionPolicy: Retain
+    Properties:
+      BucketName: "tedx-2024-script"
+
+  LogsS3Bucket:
+    Type: 'AWS::S3::Bucket'
+    DeletionPolicy: Retain
+    Properties:
+      BucketName: "tedx-2024-logs"
+
+  HelloLambdaFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: HelloLambdaFunction
+      Role: "arn:aws:iam::211125579531:role/LabRole"
+      Runtime: python3.11
+      Handler: index.my_handler
+      Code:
+        ZipFile: |
+          def my_handler(event, context):
+            message = 'Hello Lambda World!'
+            return message
+
+  FactorialLambdaFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: FactorialLambdaFunction
+      Role: "arn:aws:iam::211125579531:role/LabRole"
+      Runtime: python3.11
+      Handler: index.my_handler
+      Code:
+        ZipFile: |
+          import math
+          def my_handler(event, context):
+            x = event["x"]
+            x = math.factorial(x)
+            return x
